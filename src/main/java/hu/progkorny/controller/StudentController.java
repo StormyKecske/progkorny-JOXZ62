@@ -1,7 +1,7 @@
 package hu.progkorny.controller;
 
 import hu.progkorny.model.Student;
-import hu.progkorny.repository.StudentRepository;
+import hu.progkorny.service.StudentService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,37 +10,34 @@ import java.util.List;
 @RequestMapping("/students")
 public class StudentController {
 
-    private final StudentRepository studentRepository;
+    private final StudentService service;
 
-    public StudentController(StudentRepository studentRepository) {
-        this.studentRepository = studentRepository;
+    public StudentController(StudentService service) {
+        this.service = service;
     }
 
     @GetMapping
     public List<Student> getAll() {
-        return studentRepository.findAll();
+        return service.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public Student getById(@PathVariable Long id) {
+        return service.findById(id);
     }
 
     @PostMapping
     public Student create(@RequestBody Student student) {
-        return studentRepository.save(student);
+        return service.save(student);
     }
 
     @PutMapping("/{id}")
-    public Student update(@PathVariable Long id, @RequestBody Student updatedStudent) {
-        return studentRepository.findById(id)
-                .map(student -> {
-                    student.setName(updatedStudent.getName());
-                    return studentRepository.save(student);
-                })
-                .orElseThrow(() -> new RuntimeException("Student not found with id: " + id));
+    public Student update(@PathVariable Long id, @RequestBody Student student) {
+        return service.update(id, student);
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        if (!studentRepository.existsById(id)) {
-            throw new RuntimeException("Student not found with id: " + id);
-        }
-        studentRepository.deleteById(id);
+        service.delete(id);
     }
 }
