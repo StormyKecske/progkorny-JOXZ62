@@ -25,4 +25,22 @@ public class StudentController {
     public Student create(@RequestBody Student student) {
         return studentRepository.save(student);
     }
+
+    @PutMapping("/{id}")
+    public Student update(@PathVariable Long id, @RequestBody Student updatedStudent) {
+        return studentRepository.findById(id)
+                .map(student -> {
+                    student.setName(updatedStudent.getName());
+                    return studentRepository.save(student);
+                })
+                .orElseThrow(() -> new RuntimeException("Student not found with id: " + id));
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        if (!studentRepository.existsById(id)) {
+            throw new RuntimeException("Student not found with id: " + id);
+        }
+        studentRepository.deleteById(id);
+    }
 }
