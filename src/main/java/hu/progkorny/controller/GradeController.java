@@ -15,7 +15,7 @@ public class GradeController {
     public GradeController(GradeRepository gradeRepository) {
         this.gradeRepository = gradeRepository;
     }
-    
+
     @GetMapping
     public List<Grade> getAll() {
         return gradeRepository.findAll();
