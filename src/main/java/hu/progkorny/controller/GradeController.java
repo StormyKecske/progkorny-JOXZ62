@@ -2,6 +2,7 @@ package hu.progkorny.controller;
 
 import hu.progkorny.model.Grade;
 import hu.progkorny.repository.GradeRepository;
+import hu.progkorny.repository.StudentRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,21 +12,33 @@ import java.util.List;
 public class GradeController {
 
     private final GradeRepository gradeRepository;
+    private final StudentRepository studentRepository;
 
-    public GradeController(GradeRepository gradeRepository) {
+    public GradeController(GradeRepository gradeRepository, StudentRepository studentRepository) {
         this.gradeRepository = gradeRepository;
+        this.studentRepository = studentRepository;
     }
 
+    // GET – összes jegy
     @GetMapping
     public List<Grade> getAll() {
         return gradeRepository.findAll();
     }
 
+    // GET – egy jegy ID alapján
+    @GetMapping("/{id}")
+    public Grade getById(@PathVariable Long id) {
+        return gradeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Grade not found with id: " + id));
+    }
+
+    // POST – új jegy létrehozása
     @PostMapping
     public Grade create(@RequestBody Grade grade) {
         return gradeRepository.save(grade);
     }
 
+    // PUT – meglévő jegy módosítása
     @PutMapping("/{id}")
     public Grade update(@PathVariable Long id, @RequestBody Grade updatedGrade) {
         return gradeRepository.findById(id)
@@ -38,6 +51,7 @@ public class GradeController {
                 .orElseThrow(() -> new RuntimeException("Grade not found with id: " + id));
     }
 
+    // DELETE – jegy törlése
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         if (!gradeRepository.existsById(id)) {
