@@ -1,0 +1,40 @@
+### Összes jegy
+GET http://localhost:8080/grades
+
+###
+
+### Egy jegy
+GET http://localhost:8080/grades/1
+
+###
+
+### Új jegy létrehozása
+POST http://localhost:8080/grades
+Content-Type: application/json
+
+{
+  "subject": "Matematika",
+  "value": 5,
+  "student": {
+    "id": 1
+  }
+}
+
+###
+
+### Jegy módosítása
+PUT http://localhost:8080/grades/1
+Content-Type: application/json
+
+{
+  "subject": "Fizika",
+  "value": 4,
+  "student": {
+    "id": 1
+  }
+}
+
+###
+
+### Jegy törlése
+DELETE http://localhost:8080/grades/1
