@@ -1,0 +1,32 @@
+### Összes hallgató lekérése
+GET http://localhost:8080/students
+
+###
+
+### Egy hallgató lekérése ID alapján
+GET http://localhost:8080/students/1
+
+###
+
+### Új hallgató létrehozása
+POST http://localhost:8080/students
+Content-Type: application/json
+
+{
+  "name": "Teszt REST"
+}
+
+###
+
+### Hallgató módosítása
+PUT http://localhost:8080/students/1
+Content-Type: application/json
+
+{
+  "name": "Módosított REST"
+}
+
+###
+
+### Hallgató törlése
+DELETE http://localhost:8080/students/1
